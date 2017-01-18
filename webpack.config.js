@@ -39,7 +39,7 @@ module.exports = {
             loader: 'url-loader'
         }, {
             test: /\.css$/,
-            include: path.resolve(__dirname, 'app'),
+            // include: path.resolve(__dirname, 'app'),
             loader: ExtractTextPlugin.extract("style-loader", "css-loader")
         },{
             test: /\.js[x]?$/,
