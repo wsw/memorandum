@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Button } from 'antd';
+import App from './containers/App';
+import './main.css';
 
-class Hello extends React.Component {
-    render() {
-        return <Button>Hello</Button>;
-    }
-}
+console.log(App.render);
 
-ReactDOM.render(<Hello></Hello>, 
+ReactDOM.render(<App></App>, 
 	document.body.appendChild(document.createElement('div')));
