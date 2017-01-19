@@ -1,7 +1,8 @@
 import {
      ADD_TODO,
      COMPLETE_TODO, 
-     DELETE_TODO
+     DELETE_TODO,
+     RECOVER_TODO
 } from '../actions/index';
 
 let todos;
@@ -13,7 +14,7 @@ let todos;
     }
 })();
 
-function todoList(state = [], action) {
+function todoList(state = todos, action) {
     switch (action.type) {
         case ADD_TODO:
             var results = [
@@ -30,6 +31,17 @@ function todoList(state = [], action) {
                 ...state.slice(0, action.index),
                 Object.assign({}, state[action.index], {
                     completed: true
+                }),
+                ...state.slice(action.index + 1)
+            ];
+            localStorage.setItem('todos', JSON.stringify(results));
+            return results;
+
+        case RECOVER_TODO:
+            var results = [
+                ...state.slice(0, action.index),
+                Object.assign({}, state[action.index], {
+                    completed: false
                 }),
                 ...state.slice(action.index + 1)
             ];

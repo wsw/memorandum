@@ -2,6 +2,8 @@ import React from 'react';
 import { Layout, Menu, Icon, Input, Button } from 'antd';
 import Record from '../components/Record';
 import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { addTodo, completeTodo, deleteTodo, recoverTodo} from '../actions/index';
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
@@ -11,15 +13,36 @@ class App extends React.Component {
 		super();
 	}
 
+	onAdd() {
+		const value = this.input.refs.input.value;
+		if (value) {
+			this.props.addTodo(value);
+		} else {
+			alert('请输入事项');
+		}
+	}
+
 	render () {
-		console.log(this.props)
+		console.log(this.props);
+		const records = this.props.todos.map((value, index) => {
+			return <Record 
+					key={index} 
+					index={index} 
+					checked={value.completed}
+					title={value.text} 
+					onComplete={this.props.completeTodo}
+					onRecover={this.props.recoverTodo}
+					onClose={this.props.deleteTodo}
+					completed={value.completed}>
+				</Record>	
+		});
 		/*<Button className="button">搜索</Button>*/
 		return  (
 		<Layout className="container">
 			<Header className="header">
 				<div className="logo">我的备忘录</div>
-				<Input className="input" placeholder="新建事项" size="large" />
-				<Button className="button" type="primary">添加</Button>
+				<Input ref={ref => this.input = ref} onPressEnter={this.onAdd.bind(this)} className="input" placeholder="新建事项" size="large" />
+				<Button onClick={this.onAdd.bind(this)} className="button" type="primary">添加</Button>
 			</Header>
 			<Content>
 				<Layout>
@@ -37,8 +60,7 @@ class App extends React.Component {
 						</Menu>
 					</Sider>
 					<Content className="content">
-						<Record title="我来比较了哈哈哈哈"></Record>	
-						<Record title="我来比较了哈哈哈哈我来比较了哈哈哈哈我来比较了哈哈哈哈我来比较了哈哈哈哈"></Record>		
+						{ records }		
 					</Content>
 				</Layout>
 			</Content>
@@ -52,4 +74,12 @@ class App extends React.Component {
 function mapStateToProps(state) {
     return {todos: state.todos};
 }
-export default connect(mapStateToProps)(App);
+function mapDispatchToProps(dispatch) {
+	return {
+		addTodo: bindActionCreators(addTodo, dispatch),
+		completeTodo: bindActionCreators(completeTodo, dispatch),
+		deleteTodo: bindActionCreators(deleteTodo, dispatch),
+		recoverTodo: bindActionCreators(recoverTodo, dispatch)
+	}
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App);
