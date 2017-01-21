@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Checkbox, Icon } from 'antd';
 
-export default class Record extends React.Component {
+class Record extends React.Component {
     constructor() {
         super();
     }
@@ -32,3 +32,13 @@ export default class Record extends React.Component {
         )
     }
 }
+
+Record.propTypes = {
+    onComplete: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
+    onRecover: PropTypes.func.isRequired,
+    checked: PropTypes.bool.isRequired,
+    number: PropTypes.number.isRequired
+}
+
+export default Record;

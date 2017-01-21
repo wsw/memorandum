@@ -10,7 +10,6 @@ class TodoList extends Component {
     }
 
     render() {
-		console.log(this.props.location.query.type);
 		const type = this.props.location.query.type;
 		let todos;
 		switch (type) {
