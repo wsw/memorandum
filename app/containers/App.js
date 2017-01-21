@@ -1,9 +1,11 @@
 import React from 'react';
 import { Layout, Menu, Icon, Input, Button } from 'antd';
-import Record from '../components/Record';
-import {connect} from 'react-redux';
+// import Record from '../components/Record';
+import ToDoList from './TodoList';
+import { connect } from 'react-redux';
+import { addTodo } from '../actions/index';
 import { bindActionCreators } from 'redux';
-import { addTodo, completeTodo, deleteTodo, recoverTodo} from '../actions/index';
+import { Link } from 'react-router'
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
@@ -23,20 +25,14 @@ class App extends React.Component {
 	}
 
 	render () {
-		console.log(this.props);
-		const records = this.props.todos.map((value, index) => {
-			return <Record 
-					key={index} 
-					index={index} 
-					checked={value.completed}
-					title={value.text} 
-					onComplete={this.props.completeTodo}
-					onRecover={this.props.recoverTodo}
-					onClose={this.props.deleteTodo}
-					completed={value.completed}>
-				</Record>	
-		});
 		/*<Button className="button">搜索</Button>*/
+		
+		const type = this.props.location.query.type;
+		const todos = this.props.todos;
+
+		const all = this.props.todos.length;
+		const done = this.props.todos.filter((value=>value.completed)).length;
+
 		return  (
 		<Layout className="container">
 			<Header className="header">
@@ -49,18 +45,18 @@ class App extends React.Component {
 					<Sider width={200}>
 						<Menu
 							mode="inline"
-							defaultSelectedKeys={['1']}
+							defaultSelectedKeys={[type ? type: '1']}
 							defaultOpenKeys={['sub1']}
 							theme="dark" >
 							<SubMenu key="sub1" title={<span><Icon type="user" />分类选择</span>}>
-								<Menu.Item key="1">全部</Menu.Item>
-								<Menu.Item key="2">正在进行</Menu.Item>
-								<Menu.Item key="3">已完成</Menu.Item>
+								<Menu.Item key="1"><Link to="/">全部 ({all})</Link></Menu.Item>
+								<Menu.Item key="doing"><Link to="/?type=doing">正在进行 ({all-done})</Link></Menu.Item>
+								<Menu.Item key="done"><Link to="/?type=done">已完成 ({done})</Link></Menu.Item>
 							</SubMenu>
 						</Menu>
 					</Sider>
 					<Content className="content">
-						{ records }		
+						{this.props.children}
 					</Content>
 				</Layout>
 			</Content>
@@ -71,15 +67,16 @@ class App extends React.Component {
 	}
 }
 
-function mapStateToProps(state) {
-    return {todos: state.todos};
-}
-function mapDispatchToProps(dispatch) {
+const mapStateToProps = (state) => {
 	return {
-		addTodo: bindActionCreators(addTodo, dispatch),
-		completeTodo: bindActionCreators(completeTodo, dispatch),
-		deleteTodo: bindActionCreators(deleteTodo, dispatch),
-		recoverTodo: bindActionCreators(recoverTodo, dispatch)
+		todos: state.todos
 	}
 }
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+	return {
+		addTodo: bindActionCreators(addTodo, dispatch)
+	}
+}
+
 export default connect(mapStateToProps, mapDispatchToProps)(App);

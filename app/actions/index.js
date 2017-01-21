@@ -20,16 +20,16 @@ export function addTodo(text) {
 	return { type: ADD_TODO, text }
 }
 
-export function completeTodo(index) {
-	return { type: COMPLETE_TODO, index }
+export function completeTodo(number) {
+	return { type: COMPLETE_TODO, number }
 }
 
-export function recoverTodo(index) {
-	return { type: RECOVER_TODO, index }
+export function recoverTodo(number) {
+	return { type: RECOVER_TODO, number }
 }
 
-export function deleteTodo(index) {
-	return { type: DELETE_TODO, index }
+export function deleteTodo(number) {
+	return { type: DELETE_TODO, number }
 }
 
 export function setVisibilityFilter(filter) {

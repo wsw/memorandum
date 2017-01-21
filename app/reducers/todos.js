@@ -15,43 +15,51 @@ let todos;
 })();
 
 function todoList(state = todos, action) {
+    let index = 0, results;
+    if (action.number) {
+        index = state.findIndex((value => {
+            return value.number == action.number;
+        }));
+    }
     switch (action.type) {
         case ADD_TODO:
-            var results = [
+            let number = state.length >0 ? state[state.length-1].number : 0;
+            results = [
                 ...state, {
                     text: action.text,
-                    completed: false
+                    completed: false,
+                    number: number+1
                 }
             ];
             localStorage.setItem('todos', JSON.stringify(results));
             return results;
 
         case COMPLETE_TODO:
-            var results = [
-                ...state.slice(0, action.index),
-                Object.assign({}, state[action.index], {
+            results = [
+                ...state.slice(0, index),
+                Object.assign({}, state[index], {
                     completed: true
                 }),
-                ...state.slice(action.index + 1)
+                ...state.slice(index + 1)
             ];
             localStorage.setItem('todos', JSON.stringify(results));
             return results;
 
         case RECOVER_TODO:
-            var results = [
-                ...state.slice(0, action.index),
-                Object.assign({}, state[action.index], {
+            results = [
+                ...state.slice(0, index),
+                Object.assign({}, state[index], {
                     completed: false
                 }),
-                ...state.slice(action.index + 1)
+                ...state.slice(index + 1)
             ];
             localStorage.setItem('todos', JSON.stringify(results));
             return results;
 
         case DELETE_TODO:
-            var results = [
-                ...state.slice(0, action.index),
-                ...state.slice(action.index + 1)
+            results = [
+                ...state.slice(0, index),
+                ...state.slice(index + 1)
             ];  
             localStorage.setItem('todos', JSON.stringify(results));
             return results;
