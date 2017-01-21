@@ -1,5 +1,5 @@
 ## 简单的备忘录
-1. 技术实现：react+react-router+redux+postcss+es6
+1. 技术实现：react+react-router+redux+antd+es6
 2. 在线演示地址：[备忘录](http://wsw.github.io/memorandum/index.html)
 
 ###功能说明
