@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Icon, Input, Button } from 'antd';
+import { Layout, Menu, Icon, Input, Button, message } from 'antd';
 // import Record from '../components/Record';
 import ToDoList from './TodoList';
 import { connect } from 'react-redux';
@@ -20,7 +20,7 @@ class App extends React.Component {
 		if (value) {
 			this.props.addTodo(value);
 		} else {
-			alert('请输入事项');
+			message.error('请输入事项');
 		}
 	}
 
